@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 
 function DocumentUpload() {
@@ -22,7 +21,7 @@ function DocumentUpload() {
     }
 
     return (
-        <div>
+        <div className="bg-zinc-800 rounded-lg p-4 flex items-center gap-3">
             <input
                 onChange={(e) => {
                     if (e.target.files) {
@@ -31,9 +30,15 @@ function DocumentUpload() {
                 }}
                 type="file"
                 accept=".pdf"
+                className="text-sm text-zinc-300"
             />
-            <button onClick={handleUpload}>Upload</button>
-            {uploadStatus && <p>{uploadStatus}</p>}
+            <button
+                onClick={handleUpload}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-1.5 rounded-lg"
+            >
+                Upload
+            </button>
+            {uploadStatus && <span className="text-sm text-green-400">{uploadStatus}</span>}
         </div>
     );
 }

@@ -22,13 +22,20 @@ function ChatWindow() {
     }
 
     return (
-        <div>
-            <div>
+        <div className="bg-zinc-800 rounded-lg p-4 flex flex-col gap-4">
+            <div className="flex flex-col gap-3 max-h-96 overflow-y-auto">
                 {messages.map((msg, index) => (
-                    <div key={index}>
-                        <p>{msg.role}: {msg.content}</p>
+                    <div
+                        key={index}
+                        className={`rounded-lg p-3 text-sm ${
+                            msg.role === "user"
+                                ? "bg-indigo-600 self-end max-w-xs"
+                                : "bg-zinc-700 self-start max-w-md"
+                        }`}
+                    >
+                        <p>{msg.content}</p>
                         {msg.sources && (
-                            <ul>
+                            <ul className="mt-2 text-xs text-zinc-400 space-y-1">
                                 {msg.sources.map((source, i) => (
                                     <li key={i}>{source.slice(0, 100)}...</li>
                                 ))}
@@ -38,15 +45,23 @@ function ChatWindow() {
                 ))}
             </div>
 
-            <input
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                type="text"
-                placeholder="Ask a question..."
-            />
-            <button onClick={handleAsk}>Ask</button>
+            <div className="flex gap-2">
+                <input
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    type="text"
+                    placeholder="Ask a question..."
+                    className="flex-1 bg-zinc-900 text-white text-sm rounded-lg px-3 py-2 outline-none"
+                />
+                <button
+                    onClick={handleAsk}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg"
+                >
+                    Ask
+                </button>
+            </div>
         </div>
     );
-    }
+}
 
 export default ChatWindow;
