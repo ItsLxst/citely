@@ -12,4 +12,4 @@ async def ask_question(question: Question):
     results = query_collection(embedding, n_results=3)
     found_chunks = results["documents"][0]
     answer = ask_llm(question.question, found_chunks)
-    return {"answer": answer}
+    return {"answer": answer, "sources": found_chunks}
