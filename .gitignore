@@ -8,3 +8,4 @@ __pycache__/
 AGENTS.md
 CLAUDE.md
 chroma_data/
+next-env.d.ts
