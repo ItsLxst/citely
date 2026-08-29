@@ -10,7 +10,7 @@ function ChatWindow() {
         setMessages((prevMessages) => [...prevMessages, {role: "user", content: currentQuestion}]);
         setQuestion("");
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/documents/upload`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat/ask`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ question: currentQuestion }),
