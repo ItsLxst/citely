@@ -9,7 +9,7 @@ router = APIRouter()
 @router.post("/ask")
 async def ask_question(question: Question):
     embedding = get_embedding(question.question)
-    results = query_collection(embedding, n_results=3)
+    results = query_collection(embedding, n_results=5)
     found_chunks = results["documents"][0]
     answer = ask_llm(question.question, found_chunks)
     return {"answer": answer, "sources": found_chunks}
