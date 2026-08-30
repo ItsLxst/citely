@@ -25,7 +25,7 @@ A RAG-based document Q&A assistant — upload a PDF, ask questions about it, and
 
 - **Frontend:** Next.js (App Router), React, TypeScript, Tailwind CSS
 - **Backend:** FastAPI (Python)
-- **Vector Database:** ChromaDB (with its built-in lightweight ONNX embedding function)
+- **Vector Database:** ChromaDB, using its built-in ONNX-based `DefaultEmbeddingFunction` for embeddings
 - **LLM:** Groq API (`openai/gpt-oss-20b`)
 - **PDF Parsing:** pypdf
 - **Deployment:** Frontend on Vercel, Backend on Render
@@ -103,11 +103,11 @@ Open `http://localhost:3000` in your browser.
 ## 📚 What I Learned
 
 - Building a full RAG (Retrieval-Augmented Generation) pipeline from scratch: chunking, embedding, vector storage, retrieval, and grounded generation
-- Designing a chunking strategy with overlap to avoid splitting sentences across chunks, and handling edge cases (very short text, overlap larger than chunk size)
-- Using ChromaDB for vector storage and similarity search, and swapping embedding backends (from `sentence-transformers` to Chroma's lightweight built-in ONNX embedding function) to fit within free-tier memory limits
+- Designing a chunking strategy with overlap to avoid splitting sentences across chunks
+- Using ChromaDB for both vector storage/similarity search and embedding generation via its built-in ONNX embedding function
 - Writing prompts that explicitly constrain the LLM to the provided context, preventing hallucinated answers on out-of-scope questions
 - Debugging CORS from both sides — understanding why the browser blocks cross-origin requests without an explicit `Access-Control-Allow-Origin` header, and configuring `CORSMiddleware` correctly for both local and production origins
-- Diagnosing an Out-of-Memory deploy failure caused by `torch`'s GPU build being installed by default, and resolving it by switching to a CPU-only build and eventually removing the heavy ML dependency entirely
+- Hitting a memory-limited deploy failure on Render's free tier after initially trying `sentence-transformers` for embeddings, and resolving it by switching entirely to ChromaDB's lightweight built-in ONNX embedding function — a practical lesson in fitting ML dependencies to hosting constraints
 - Managing environment-specific configuration (API URLs) across local development and split deployments (Vercel for frontend, Render for backend)
 
 ---
@@ -115,6 +115,7 @@ Open `http://localhost:3000` in your browser.
 ## 🔮 Future Improvements
 
 - [ ] Improve retrieval for broad/summarization-style questions — e.g. by detecting when a query needs whole-document context and adjusting the retrieval strategy accordingly, rather than always retrieving a fixed number of chunks
+- [ ] Handle the edge case where document text is shorter than the chunk overlap size (currently produces zero chunks)
 - [ ] Split chunks along section/heading boundaries instead of a fixed character count, so related content doesn't get split across unrelated topics
 - [ ] Persist uploaded documents across sessions (currently reset when the backend restarts on free-tier hosting)
 - [ ] Add multi-document support instead of a single shared collection
